@@ -7,7 +7,7 @@ tags: [标签一,标签二]
 description: 文章金句。
 ---
 
-![you](https://github.com/512524820/512524820.github.io/img/black.jpg)  ![her](https://github.com/512524820/512524820.github.io/_posts/img/her.jpg)
+![you](img/you.jpg) ![her](img/her.jpg)
 
 
 
