@@ -7,7 +7,7 @@ header-img: "img/green.jpg"
 
 ![photo](img/you.jpg)
 
-![photo1](https://github.com/512524820/512524820.github.io/blob/master/img/her.jpg)
+![photo1](img/her.jpg)
 自我介绍。
 
 
