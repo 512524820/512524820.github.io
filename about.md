@@ -7,7 +7,7 @@ header-img: "img/green.jpg"
 
 ![photo](img/you.jpg)
 
-![photo1](img/her.jpg)
+![photo1](_posts/img/her.jpg)
 自我介绍。
 
 
