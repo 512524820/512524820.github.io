@@ -11,8 +11,6 @@ description: 文章金句。
 ***
 ![you](../img/you.jpg)  
 
-![her](img/her.jpg)
-
 
 
 
