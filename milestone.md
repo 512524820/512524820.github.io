@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "代表作"
+title: "milestone"
 description: ""  #填写代表作的描述
 header-img: "img/zhihu.jpg"
 ---
