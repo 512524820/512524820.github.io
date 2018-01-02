@@ -1,5 +1,5 @@
 # Site settings
-title: HOME #你的博客名字，可以定义修订
+title: Nobody #你的博客名字，可以定义修订
 header-img: "img/naruto.jpg" #背景图片
 tagline: "cn"  
 description: "这是我的博客"  # 一句话描述你的博客
@@ -18,7 +18,7 @@ favicon: img/favicon.png # 浏览器地址栏小图标，可自定义更改
 
 douban_username:  # 你的豆瓣id
 twitter_username: 
-github_username: 
+github_username: 512524820
 facebook_username: 
 weibo_username: 
 zhihu_username: 
