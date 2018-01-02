@@ -3,7 +3,7 @@ layout: post
 title: Linux下的crontab定时执行任务命令详解  
 date: 2018-1-2
 categories: blog
-tags: [技术]
+tags: [技术,crontab计划任务]
 description: Linux下的crontab定时执行任务命令详解。
 ---
 
@@ -25,9 +25,9 @@ cron的配置文件称为“crontab”，是“cron table”的简写。
 
 
 `
-SHELL=/bin/bash 
-PATH=/sbin:/bin:/usr/sbin:/usr/bin 
-MAILTO=root 
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
 HOME=/ 
 For details see man 4 crontabs
 Example of job definition:
