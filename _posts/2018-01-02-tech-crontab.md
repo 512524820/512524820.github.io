@@ -24,7 +24,7 @@ cron的配置文件称为“crontab”，是“cron table”的简写。
 # /etc/crontab 这个文件负责安排由系统管理员制定的维护系统以及其他任务的crontab。
 
 
-`
+```
 SHELL=/bin/bash  
 PATH=/sbin:/bin:/usr/sbin:/usr/bin  
 MAILTO=root  
@@ -38,7 +38,7 @@ Example of job definition:
 |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat  
 |  |  |  |  |  
 *  *  *  *  * user-name command to be executed  
-`
+```
 
 MAILTO=root：是说，当 /etc/crontab 这个档案中的例行性命令发生错误时，会将错误讯息或者是屏幕显示的讯息传给谁？由于 root 并无法再用户端收信，因此，我通常都將这个 e-mail 改成自己的账号，好让我随时了解系统的状态！
 
@@ -74,11 +74,13 @@ HP-UNIX 中默认普通用户没得crontab 权限 ，要想放开普通用户的
 　　`minute hour day-of-month month-of-year day-of-week commands` 
     合法值 `00-59 00-23 01-31 01-12 0-6 (0 is sunday) `
     除了数字还有几个个特殊的符号就是`"*"、"/"`和`"-"、","`\*代表所有的取值范围内的数字，`/`代表每的意思,`/5`表示每5个单位，`-`代表从某个数字到某个数字,","分开几个离散的数字。
-
+    
+```
     `-l` 在标准输出上显示当前的crontab 
 　　`-r` 删除当前的crontab文件。 
 　　`-e` 使用VISUAL或者EDITOR环境变量所指的编辑器编辑当前的crontab文件。当结束编辑离开时，编辑后的文件将自动安装。 
- 
+``` 
+
 # 例子： 
 每天早上6点 
 `0 6 * * * echo "Good morning." >> /tmp/test.txt `//注意单纯echo，从屏幕上看不到任何输出，因为cron把任何输出都email到root的信箱了。
