@@ -4,7 +4,7 @@ title: Linux下的crontab定时执行任务命令详解
 date: 2018-1-2
 categories: blog
 tags: [技术]
-description: Linux下的crontab定时执行任务命令详解
+description: Linux下的crontab定时执行任务命令详解。
 ---
 
 在Linux中，周期执行的任务一般由cron这个守护进程来处理[ps -ef|grep cron]。cron读取一个或多个配置文件，这些配置文件中包含了命令行及其调用时间。
@@ -22,6 +22,7 @@ cron的配置文件称为“crontab”，是“cron table”的简写。
  /var/spool/cron/ 这个目录下存放的是每个用户包括root的crontab任务，每个任务以创建者的名字命名，比如tom建的crontab任务对应的文件就是/var/spool/cron/tom。一般一个用户最多只有一个crontab文件。
 
 # /etc/crontab 这个文件负责安排由系统管理员制定的维护系统以及其他任务的crontab。
+
 
 `
 SHELL=/bin/bash 
@@ -43,40 +44,40 @@ MAILTO=root：是说，当 /etc/crontab 这个档案中的例行性命令发生�
 
 `01 * * * * root run-parts /etc/cron.hourly`在 `#run-parts` 这一行以后的命令，我们可以发现，五个数字后面接的是 root ，这一行代表的是『执行的级别为root身份』当然，你也可以将这一行改为成其他的身份！而 `run-parts`代表后面接的 `/etc/cron.hourly` 是『一个目录内（/etc/cron.hourly）的所有可执行文件』，也就是说，每个小时的01分，系统会以root身份去`/etc/cron.hourly`这个目录下执行所有可执行的文件！后面三行也是类似的意思！你可以到 `/etc/` 底下去看看，系统本来就预设了这4个目录！你可以将每天需要执行的命令直接写到`/etc/cron.daily`即可，还不需要使用到`crontab -e`的程式！
 
-# `/etc/cron.d/` 这个目录用来存放任何要执行的crontab文件或脚本。
+ `/etc/cron.d/` 这个目录用来存放任何要执行的crontab文件或脚本。
 
-# 权限(？)
+# 权限
 crontab权限问题到`/var/adm/cron/`下一看，文件`cron.allow`和`cron.deny`是否存在
-用法如下： 
-1.如果两个文件都不存在，则只有root用户才能使用crontab命令。 
-2.如果`cron.allow`存在但`cron.deny`不存在，则只有列在`cron.allow`文件里的用户才能使用crontab命令，如果root用户也不在里面，则root用户也不能使用crontab。 
-3.如果cron.allow不存在, cron.deny存在，则只有列在cron.deny文件里面的用户不能使用crontab命令，其它用户都能使用。 
-4.如果两个文件都存在，则列在cron.allow文件中而且没有列在cron.deny中的用户可以使用crontab，如果两个文件中都有同一个用户，以cron.allow文件里面是否有该用户为准，如果cron.allow中有该用户，则可以使用crontab命令。
+用法如下：
+1. 如果两个文件都不存在，则只有root用户才能使用crontab命令。 
+2. 如果`cron.allow`存在但`cron.deny`不存在，则只有列在`cron.allow`文件里的用户才能使用crontab命令，如果root用户也不在里面，则root用户也不能使用crontab。 
+3. 如果cron.allow不存在, cron.deny存在，则只有列在cron.deny文件里面的用户不能使用crontab命令，其它用户都能使用。 
+4. 如果两个文件都存在，则列在cron.allow文件中而且没有列在cron.deny中的用户可以使用crontab，如果两个文件中都有同一个用户，以cron.allow文件里面是否有该用户为准，如果cron.allow中有该用户，则可以使用crontab命令。
 
 AIX 中 普通用户默认都有 crontab 权限，如果要限制用户使用 crontab ,就需要编辑`/var/adm/cron/cron.deny`
 HP-UNIX 中默认普通用户没得crontab 权限 ，要想放开普通用户的crontab 权限可以编
 
 # 创建cron脚本
 第一步：写cron脚本文件,命名为crontest.cron。
-15,30,45,59 * * * * echo "xgmtest....." >> xgmtest.txt  表示，每隔15分钟，执行打印一次命令 
-第二步：添加定时任务。执行命令 “crontab crontest.cron”。搞定 
-第三步："crontab -l" 查看定时任务是否成功或者检测/var/spool/cron下是否生成对应cron脚本
+`15,30,45,59 * * * * echo "xgmtest....." >> xgmtest.txt`  表示，每隔15分钟，执行打印一次命令 
+第二步：添加定时任务。执行命令 `crontab crontest.cron`搞定 
+第三步：`crontab -l` 查看定时任务是否成功或者检测`/var/spool/cron`下是否生成对应cron脚本
 
 注意：这操作是直接替换该用户下的crontab，而不是新增
  
 # crontab用法 
 　　crontab命令用于安装、删除或者列出用于驱动cron后台进程的表格。用户把需要执行的命令序列放到crontab文件中以获得执行。
-    每个用户都可以有自己的crontab文件。/var/spool/cron下的crontab文件不可以直接创建或者直接修改。该crontab文件是通过crontab命令创建的
+    每个用户都可以有自己的crontab文件。`/var/spool/cron`下的crontab文件不可以直接创建或者直接修改。该crontab文件是通过crontab命令创建的
 
 　  在crontab文件中如何输入需要执行的命令和时间。该文件中每行都包括六个域，其中前五个域是指定命令被执行的时间，最后一个域是要被执行的命令。
     每个域之间使用空格或者制表符分隔。格式如下： 
-　　minute hour day-of-month month-of-year day-of-week commands 
-    合法值 00-59 00-23 01-31 01-12 0-6 (0 is sunday) 
-    除了数字还有几个个特殊的符号就是"*"、"/"和"-"、","，*代表所有的取值范围内的数字，"/"代表每的意思,"/5"表示每5个单位，"-"代表从某个数字到某个数字,","分开几个离散的数字。
+　　`minute hour day-of-month month-of-year day-of-week commands` 
+    合法值 `00-59 00-23 01-31 01-12 0-6 (0 is sunday) `
+    除了数字还有几个个特殊的符号就是`"*"、"/"`和`"-"、","`\*代表所有的取值范围内的数字，`/`代表每的意思,`/5`表示每5个单位，`-`代表从某个数字到某个数字,","分开几个离散的数字。
 
-    -l 在标准输出上显示当前的crontab。 
-　　-r 删除当前的crontab文件。 
-　　-e 使用VISUAL或者EDITOR环境变量所指的编辑器编辑当前的crontab文件。当结束编辑离开时，编辑后的文件将自动安装。 
+    `-l` 在标准输出上显示当前的crontab 
+　　`-r` 删除当前的crontab文件。 
+　　`-e` 使用VISUAL或者EDITOR环境变量所指的编辑器编辑当前的crontab文件。当结束编辑离开时，编辑后的文件将自动安装。 
  
 # 例子： 
 每天早上6点 
