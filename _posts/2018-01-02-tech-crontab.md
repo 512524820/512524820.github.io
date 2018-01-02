@@ -10,7 +10,7 @@ description: Linux下的crontab定时执行任务命令详解
 在Linux中，周期执行的任务一般由cron这个守护进程来处理[ps -ef|grep cron]。cron读取一个或多个配置文件，这些配置文件中包含了命令行及其调用时间。
 cron的配置文件称为“crontab”，是“cron table”的简写。
 
-一#cron服务
+#cron服务
 　　cron是一个linux下 的定时执行工具，可以在无需人工干预的情况下运行作业。
 　　service crond start    //启动服务
 　　service crond stop    //关闭服务
@@ -18,10 +18,10 @@ cron的配置文件称为“crontab”，是“cron table”的简写。
 　　service crond reload  //重新载入配置
 　　service crond status  //查看服务状态
 
-二、cron在3个地方查找配置文件：
-1、/var/spool/cron/ 这个目录下存放的是每个用户包括root的crontab任务，每个任务以创建者的名字命名，比如tom建的crontab任务对应的文件就是/var/spool/cron/tom。一般一个用户最多只有一个crontab文件。
+#cron在3个地方查找配置文件：
+ /var/spool/cron/ 这个目录下存放的是每个用户包括root的crontab任务，每个任务以创建者的名字命名，比如tom建的crontab任务对应的文件就是/var/spool/cron/tom。一般一个用户最多只有一个crontab文件。
 
-三、/etc/crontab 这个文件负责安排由系统管理员制定的维护系统以及其他任务的crontab。
+ #/etc/crontab 这个文件负责安排由系统管理员制定的维护系统以及其他任务的crontab。
 SHELL=/bin/bash
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 MAILTO=root
