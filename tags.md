@@ -1,8 +1,8 @@
 ---
 layout: page
-title: "Tags"
-description: "文章基因库"  
-header-img: "img/black.jpg"  
+title: "tags"
+description: " " #填写tsgs描述
+header-img: "img/black.jpg"
 ---
 
 
