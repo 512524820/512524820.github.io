@@ -1,3 +1,12 @@
+---
+layout: post
+title: java泛型的使用
+date: 2018-2-24
+categories: blog
+tags: [技术,泛型,java]
+description: 。
+---
+
 # 概述
 泛型在java中有很重要的地位，在面向对象编程及各种设计模式中有非常广泛的应用。
 
