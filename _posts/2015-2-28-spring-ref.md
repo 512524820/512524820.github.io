@@ -1,3 +1,12 @@
+---
+layout: post
+title: spring中的ref用法
+date: 2018-2-28
+categories: blog
+tags: [技术,spring,java]
+description: 。
+---
+
 ref元素是用在property中，来设置需要引用的容器管理的其它Bean。
  
    它的用法：<ref  bean|local|parent="someBean">,这里主要分析一下这三个参数的作用。
