@@ -1,3 +1,12 @@
+---
+layout: post
+title: spring之ModelAttribute的用法示例
+date: 2018-3-5
+categories: blog
+tags: [java,spring,ModelAttribute]
+description: 。
+---
+
 之前项目中并自己并没有怎么使用到过@ModelAttribute这个注解，接手一个老项目的时候发现项目中大量使用@ModelAttribute这个注解，在这里就整理下这个注解常用的方式，也为自己做个记录，以免久了不用又忘记了 
 @ModelAttribute使用大致有有两种，一种是是直接标记在方法上，一种是标记在方法的参数中，两种标记方法产生的效果也各不相同，这里就列举下两种标记所产生的效果
 
@@ -85,7 +94,7 @@ public class ModelAttributeTest {
 ```
 部署后运行，点击页面测试按钮，查看控制台输出，这个时候你会发现，后台控制器并没有直接进入modelTest.do的路径，而是先执行了被@ModelAttribute标记的init方法。应该这么理解，当同一个controller中有任意一个方法被@ModelAttribute注解标记，页面请求只要进入这个控制器，不管请求那个方法，均会先执行被@ModelAttribute标记的方法，所以我们可以用@ModelAttribute注解的方法做一些初始化操作。当同一个controller中有多个方法被@ModelAttribute注解标记，所有被@ModelAttribute标记的方法均会被执行，按先后顺序执行，然后再进入请求的方法。
 
-[!photo](http://img.blog.csdn.net/20170225232820631?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![photo](http://img.blog.csdn.net/20170225232820631?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 下面方法做一些变形，变形为带有参数的返回，这样也是实际开发中经常会操作的 
 首先像创建个pojo对象，对象包含userName，sex两个属性。并对JSP及控制器代码做一些修改
@@ -132,9 +141,9 @@ public class ModelAttributeTest {
 ```
 访问ModelTest.jsp页面并点击测试
 
-[!photo](http://img.blog.csdn.net/20170225235606065?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![photo](http://img.blog.csdn.net/20170225235606065?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 出现如下结果
-[!photo](http://img.blog.csdn.net/20170225235700722?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![photo](http://img.blog.csdn.net/20170225235700722?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 从执行结果看出，当访问请求时，会首先访问init方法，然后再对test方法进行访问，并且是同一个请求，因为model模型数据的作用域与request相同，所以可以用此标记直接标记在方法上对实际要访问的方法进行一些初始化操作
 
 2. @ModelAttribute标记方法有返回值
@@ -170,7 +179,7 @@ public class ModelAttributeTest {
 }
 ```
 这里稍微做了点变形，可以看到在被@ModelAttribute方法中设值了返回路径为befor方法，但是在在代码运行的过程中并不会跳转befor方法，而是在代码执行完成return之前直接跳转了实际请求的方法。
-[!photo](http://img.blog.csdn.net/20170226002852409?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![photo](http://img.blog.csdn.net/20170226002852409?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 3. 当@RequestMapping标记和@ModelAttribute同时标记在一个方法上
 ```java
@@ -223,7 +232,7 @@ public class ModelAttributeTest {
   </body>
 ```
   点击测试页面，会发现当两个注解同时注解到一个方法上时，方法的返回值会变成model模型的返回值，key是标记的名
-  [!photo](http://img.blog.csdn.net/20170226004759235?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast0)
+![photo](http://img.blog.csdn.net/20170226004759235?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast0)
   
   # @ModelAttribute标记在参数前
   从from表单或url地址中取值，这里就以url地址为例，为了避免url地址中文乱码问题，这里调用了encodeURL函数
@@ -267,7 +276,7 @@ public class ModelAttributeTest {
 }
 ```
 点击页面测试，页面文本框会显示URL地址传递过来的参数，因为SpringMVC会自动匹匹配页面传递过来的参数的name属性和后台控制器中的方法中的参数名，如果参数名相同，会自动匹配，如果控制器中方法是封装的bean,会自动匹配bean中的属性，其实这种取值方式不需要用@ModelAttribute注解，只要满足匹配要求，也能拿得到值
-[!photo](http://img.blog.csdn.net/20170226011711946?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![photo](http://img.blog.csdn.net/20170226011711946?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 从model对象中取值
 ```java
 @Controller
@@ -292,4 +301,4 @@ public class ModelAttributeTest {
 }
 ```
 点击测试发现，modelTest拿到inint方法中的pojo对象，合并两次set的参数后返回页面
-[!photo](http://img.blog.csdn.net/20170226023308348?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![photo](http://img.blog.csdn.net/20170226023308348?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGFycnlfWkhfV2FuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
