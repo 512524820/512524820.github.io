@@ -211,3 +211,30 @@ WEB服务器表明该实体将在什么时候过期，对于过期了的对象�
 
 WEB服务器认为对象的最后修改时间，比如文件的最后修改时间，动态页面的最后产生时间等等。例如：Last-Modified：Tue, 06 May 2008 02:42:43 GMT
 
+
+# 以百度首页为例获取请求头和响应头
+1. 请求头
+我们现在通过谷歌浏览器来查看一下请求头：
+
+以打开百度首页为例，然后在谷歌浏览器中打开“工具-开发者工具”，切换到network标签， 然后刷新页面：
+![photo](http://images.cnitblog.com/blog/641601/201410/031612153476585.jpg)
+
+上图中，打开箭头处html格式的文件，显示如下：
+![photo](http://images.cnitblog.com/blog/641601/201410/031612473318622.png)
+
+上图中的Request Headers就是我们所需要的请求头。里面的内容全部是键值对。服务器拿到这些键值对后会对其进行分析。
+
+- Host:www.baidu.com      本次请求访问的主机地址（虚拟主机名称）
+- Cache-control:no-cache        设置网页缓存的使用方法
+- Pragma:no-cache
+- Accept:text/html,xxxxxx…..客户端可以接收的数据类型（如果内容是：*/*，表示接收所有类型）
+- User-Agent:Mozilla/5.0xxxxx 主要表示客户端类型
+- Accept-Encoding:gzip,deflate,sdch 浏览器能够接收的数据压缩编码方式（表示浏览器能够接收什么格式的压缩的数据）
+- Accept-Language:zh-CN,zh;q=0.8 浏览器期望的接受的语言种类
+- Accept-Charset: ISO-8859-1      客户端所接收的字符集编码
+- If-Modified-Since: Tue, 11 Jul 2000 18:23:51 GMT   和缓存机制相关的头
+- Referer: http://www.smyh.me/index.jsp   当前页面来自哪个页面（可能是由之前的页面通过超链接点进到这个页面来）
+- Cookie
+- Connection: close/Keep-Alive   请求完之后，是关闭此连接，还是继续保持连接
+- Date: Tue, 11 Jul 2013 18:23:51 GMT 当前请求的时间
+
