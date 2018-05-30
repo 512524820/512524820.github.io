@@ -37,24 +37,26 @@ HTTP的头域包括通用头、请求头、响应头和实体头四个部分。�
 - Public：指示响应可被任何缓存区缓存，可以用缓存内容回应任何用户。
 - Private：指示对于单个用户的整个或部分响应消息，不能被共享缓存处理，只能用缓存内容回应先前请求该内容的那个用户。
 
-* 打开新窗口
+----四种模式----
+
+(1)打开新窗口
 
 值为private、no-cache、must-revalidate，那么打开新窗口访问时都会重新访问服务器。而如果指定了max-age值（单位为秒），那么在此值内的时间里就不会重新访问服务器，例如：
 Cache-control: max-age=5(表示当访问此网页后的5秒内再次访问不会去服务器)
 
-*在地址栏回车
+(2)在地址栏回车
 
 值为private或must-revalidate则只有第一次访问时会访问服务器，以后就不再访问。
 值为no-cache，那么每次都会访问。
 值为max-age，则在过期之前不会重复访问。
 
-*按后退按扭
+(3)按后退按扭
 
 值为private、must-revalidate、max-age，则不会重访问，
 
 值为no-cache，则每次都重复访问
 
-*按刷新按扭
+(4)按刷新按扭
 
 无论为何值，都会重复访问
 
@@ -101,6 +103,21 @@ WEB 服务器表明自己对本响应消息体（不是消息体里面的对象�
 
 Accept: text/html  代表浏览器可以接受服务器回发的类型为 text/html  也就是我们常说的html文档。如果服务器无法返回text/html类型的数据，服务器应该返回一个406错误(non acceptable)。通配符 * 代表任意类型，例如  Accept: */*  代表浏览器可以处理所有类型,(一般浏览器发给服务器都是发这个)。
 
+**Accept后跟随的都是MIME类型**，Accept: text/html表示浏览器支持的MIME类型是text/html
+
+text/html,application/xhtml+xml,application/xml 都是 MIME 类型，也可以称为媒体类型和内容类型，斜杠前面的是 type（类型），斜杠后面的是 subtype（子类型）；type 指定大的范围，subtype 是 type 中范围更明确的类型，即大类中的小类。
+
+
+   - Text：用于标准化地表示的文本信息，文本消息可以是多种字符集和或者多种格式的；
+
+　   text/html表示 html 文档；
+
+　 - Application：用于传输应用程序数据或者二进制数据；
+
+　   application/xhtml+xml表示 xhtml 文档；
+
+　   application/xml表示 xml 文档。
+
 2. Accept-Charset
 
 浏览器告诉服务器自己能接收的字符集。
@@ -128,6 +145,10 @@ Accept: text/html  代表浏览器可以接受服务器回发的类型为 text/h
 8. If-Modified-Since
 
 如果请求的对象在该头部指定的时间之后修改了，才执行请求的动作（比如返回对象），否则返回代码304，告诉浏览器该对象没有修改。例如：If-Modified-Since：Thu, 10 Apr 2008 09:14:42 GMT
+
+把浏览器端缓存页面的最后修改时间发送到服务器去，服务器会把这个时间与服务器上实际文件的最后修改时间进行对比。
+
+如果时间一致，那么返回304，客户端就直接使用本地缓存文件。如果时间不一致，就会返回200和新的文件内容。客户端接到之后，会丢弃旧文件，把新文件缓存起来，并显示在浏览器中。
 
 9. If-Unmodified-Since
 
