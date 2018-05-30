@@ -256,6 +256,26 @@ WEB服务器告诉浏览器自己响应的对象的长度或尺寸，例如：Co
 
 WEB 服务器告诉浏览器自己响应的对象的类型。例如：Content-Type：application/xml
 
+常见的媒体格式类型如下：
+
+    text/html ： HTML格式
+    text/plain ：纯文本格式      
+    text/xml ：  XML格式
+    image/gif ：gif图片格式    
+    image/jpeg ：jpg图片格式 
+    image/png：png图片格式
+    
+以application开头的媒体格式类型：
+
+    application/xhtml+xml ：XHTML格式
+    application/xml     ： XML数据格式
+    application/atom+xml  ：Atom XML聚合格式    
+    application/json    ： JSON数据格式
+    application/pdf       ：pdf格式  
+    application/msword  ： Word文档格式
+    application/octet-stream ： 二进制流数据（如常见的文件下载）
+    application/x-www-form-urlencoded ： <form encType=””>中默认的encType，form表单数据被编码为key/value格式发送到服务器（表单默认的提交数据的格式）
+
 11. Etag
 
 就是一个对象（比如URL）的标志值，就一个对象而言，比如一个html文件，如果被修改了，其Etag也会别修改，所以，ETag的作用跟Last-Modified的作用差不多，主要供WEB服务器判断一个对象是否改变了。比如前一次请求某个html文件时，获得了其 ETag，当这次又请求这个文件时，浏览器就会把先前获得ETag值发送给WEB服务器，然后WEB服务器会把这个ETag跟该文件的当前ETag进行对比，然后就知道这个文件有没有改变了。
