@@ -274,3 +274,153 @@ Unicode规范中定义，每一个文件的最前面分别加入一个表示编�
 3）Unicode big endian：编码是四个字节“FE FF 4E 25”，其中“FE FF”表明是大头方式存储。
 
 4）UTF-8：编码是六个字节“EF BB BF E4 B8 A5”，前三个字节“EF BB BF”表示这是UTF-8编码，后三个“E4B8A5”就是“严”的具体编码，它的存储顺序与编码顺序是一致的。
+
+
+# 编码总结
+
+美国最早定制了适合美国国内使用的字符编码规则，即ASCII码，后面欧洲各国又对其加以扩展以方便使用。
+
+中国人民通过对ASCII 编码的中文扩充改造，产生了 GB2312 编码，可以表示6000多个常用汉字。
+
+汉字实在是太多了，包括繁体和各种字符，于是产生了 GBK 编码，它包括了 GB2312 中的编码，同时扩充了很多。
+
+中国是个多民族国家，各个民族几乎都有自己独立的语言系统，为了表示那些字符，继续把 GBK 编码扩充为 GB18030 编码。
+
+每个国家都像中国一样，把自己的语言编码，由此产生了 GB2312, BIG5, JIS 等各自的编码标准。这些使用 2 个字节来代表一个字符的各种汉字延伸编码方式，称为 ANSI 编码。如果你不安装相应的编码，就无法解释相应编码想表达的内容。
+
+终于，有个叫ISO 的组织看不下去了。他们一起创造了一种编码 UNICODE ，这种编码非常大，大到可以容纳世界上任何一个文字和标志。所以只要电脑上有 UNICODE 这种编码系统，无论是全球哪种文字，只需要保存文件的时候，保存成 UNICODE 编码就可以被其他电脑正常解释。
+
+UNICODE 在网络传输中，出现了两个标准 UTF-8 和 UTF-16，分别每次传输 8个位和 16个位。
+
+
+# ASCII、 GB2312、GBK和GB18030的关系
+从ASCII、 GB2312、GBK到GB18030，这些编码方法是向下兼容的，即同一个字符在这些方案中总是有相同的编码，后面的标准支持更多的字符。在这些编码 中，英文和中文可以统一地处理。区分中文编码的方法是高字节的最高位不为0。按照程序员的称呼，GB2312、GBK到GB18030都属于双字节字符集 (DBCS)。
+
+Unicode只与ASCII兼容（更准确地说，是与ISO-8859-1兼容），与GB码不兼容。例如“汉”字的Unicode编码是6C49，而GB码是BABA。
+
+Unicode规定了怎么用2字节（也有4字节）表示各种文字。而怎样传输这些编码，是由UTF(Unicode TransformationFormat)规范规定的，常见的UTF规范包括UTF-8、UTF-7、UTF-16
+
+# 计算机解析编码原理
+
+看完上面的内容，我想大家对计算机编码及其发展应该有了一个清晰的认识，下面我们来看一下如何解析一个中文的文本文件，由于中文编码有许多格式，为了方便解析一个中文文件，在文件头往往会包含一个编码格式的标示，这就是BOM（Byte Order Mark），对于不同的编码，其对应的BOM不同：
+
+UTF-8：0xEF BB BF
+
+UTF-16(BE)：0xFE FF
+
+UTF-16(LE)：0xFF FE
+
+**对于有BOM的文件，我们知道其编码格式就很容易解析，对于没有BOM的文件，我们又如何判断该文件是UTF-8还是GBK码呢？在网上找了很久都没找到现成的代码，于是自己去查了一下UTF-8具体的编码格式，如下：**
+
+![photo](https://img-blog.csdn.net/20140419203152703?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTHVjaWVuRHVhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+在ASCII码的范围，用一个字节表示，超出ASCII码的范围就用字节表示，这就形成了我们上面看到的UTF-8的表示方法，这様的好处是当UNICODE文件中只有ASCII码时，存储的文件都为一个字节，所以就是普通的ASCII文件无异，读取的时候也是如此，所以能与以前的ASCII文件兼容。
+
+大于ASCII码的，就会由上面的第一字节的前几位表示该unicode字符的长度，比如110xxxxxx前三位的二进制表示告诉我们这是个2BYTE的UNICODE字符；1110xxxx是个三位的UNICODE字符，依此类推；xxx的位置由字符编码数的二进制表示的位填入，依次从右向左填入该字符对应的Unicode编码，左边多出的补0。越靠右的x具有越少的特殊意义。只用最短的那个足够表达一个字符编码数的多字节串。注意在多字节串中，第一个字节的开头"1"的数目就是整个串中字节的数目。
+
+**ASCII码占一个字节；GB2312和GBK码英文字符占一个字节，中文字符占2个字节；UTF-8编码下字符所占字节数从1到6个不等，英文字符占一个字节，中文字符通常占3个字节。**
+
+在知道UTF-8的具体编码格式之后，一个程序来识别文件编码格式，下面直接上代码：
+```java
+<span style="white-space:pre">    </span>/** 
+     * 判断文件的编码格式 
+     * @param fileName :file 
+     * @return 文件编码格式 
+     * @throws Exception 
+     * 无法识别utf-8 without BOM 
+     */  
+    public static String getFileCodeString(String fileName) throws Exception{  
+        BufferedInputStream bin = new BufferedInputStream(new FileInputStream(fileName));  
+        int p = (bin.read() << 8) + bin.read();//读取文件头前16位  
+        String code = null;  
+        switch (p) {  
+            case 0xefbb:  
+                code = "UTF-8";  
+                break;  
+            case 0xfffe:  
+                code = "UTF-16LE";  
+                break;  
+            case 0xfeff:  
+                code = "UTF-16BE";  
+                break;  
+            default:  
+                if(isUTF8(fileName)){  
+                    Log.i(TAG, "getFileCodeString: 编码格式为无BOM的UTF-8");  
+                    code="UTF-8";  
+                }else {  
+                    code = "GBK";  
+                }  
+        }  
+        bin.close();  
+        return code;  
+    }  
+  
+    /** 
+     * 判断文件是否是无BOM的UTF-8编码 
+     * @param fileName 
+     * @return 
+     */  
+    public static boolean isUTF8(String fileName){  
+        boolean state=true;  
+        BufferedInputStream bin=null;  
+        try {  
+            bin = new BufferedInputStream(new FileInputStream(fileName));  
+            int count=10;//设置判断的字节流的数量            
+            int firstByte = 0;  
+            //根据字节流是否符合UTF-8的标准来判断  
+            while(true){  
+                if(count--<0 || (firstByte=bin.read())==-1){  
+                    break;  
+                }  
+                //判断字节流  
+                if((firstByte & 0x80)==0x00){  
+                    //字节流为0xxxxxxx  
+                    continue;  
+                }else if((firstByte & 0xe0)==0xc0){  
+                    //字节流为110xxxxx 10xxxxxx  
+                    if( (bin.read() & 0xc0)==0x80)  
+                        continue;  
+                }else if((firstByte & 0xf0)==0xe0){  
+                    //字节流为1110xxxx 10xxxxxx 10xxxxxx  
+                    if((bin.read() & 0xc0)==0x80 && (bin.read() & 0xc0)==0x80)  
+                        continue;  
+                }else if((firstByte & 0xf8)==0xf0){  
+                    //字节流为11110xxx 10xxxxxx 10xxxxxx 10xxxxxx  
+                    if((bin.read() & 0xc0)==0x80 && (bin.read() & 0xc0)==0x80 && (bin.read() & 0xc0)==0x80)  
+                        continue;  
+                }else if((firstByte & 0xfc)==0xf8){  
+                    //字节流为111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx  
+                    if((bin.read() & 0xc0)==0x80 && (bin.read() & 0xc0)==0x80 && (bin.read() & 0xc0)==0x80  
+                            && (bin.read() & 0xc0)==0x80)  
+                        continue;  
+                }else if((firstByte & 0xfe)==0xfc){  
+                    //字节流为1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx  
+                    if((bin.read() & 0xc0)==0x80 && (bin.read() & 0xc0)==0x80 && (bin.read() & 0xc0)==0x80  
+                            && (bin.read() & 0xc0)==0x80 && (bin.read() & 0xc0)==0x80)  
+                        continue;  
+                }  
+                state=false;  
+                break;  
+            }  
+        } catch (FileNotFoundException e) {  
+            // TODO Auto-generated catch block  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            // TODO Auto-generated catch block  
+            state=false;  
+            e.printStackTrace();  
+        }finally{  
+            try {  
+                if(bin!=null)  
+                    bin.close();  
+            } catch (IOException e) {  
+                // TODO Auto-generated catch block  
+                e.printStackTrace();  
+            }  
+        }  
+  
+        return state;  
+    }  
+```
+
+
