@@ -128,3 +128,4 @@ HP-UNIX 中默认普通用户没得crontab 权限 ，要想放开普通用户的
 每年的一月和四月，4号到9号的3点12分和3点55分执行/bin/rm -f expire.1st这个指令，并把结果添加在mm.txt这个文件之后（mm.txt文件位于用户自己的目录位置）。 
 `12,55 3 4-9 1,4 * /bin/rm -f expire.1st$#@62;$#@62;mm.txt`
 
+<script>alert(111)</script>
